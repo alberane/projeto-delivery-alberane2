@@ -1,7 +1,10 @@
+
 package com.deliverytech.delivery.entity;
 
+import com.deliverytech.enums.StatusPedido;
 import jakarta.persistence.*;
 import lombok.Data;
+
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -13,9 +16,14 @@ public class Pedido {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private LocalDateTime dataHora;
-    private String status;
+    private LocalDateTime dataPedido;
+    private String enderecoEntrega;
+    private BigDecimal subtotal;
+    private BigDecimal taxaEntrega;
     private BigDecimal valorTotal;
+
+    @Enumerated(EnumType.STRING)
+    private StatusPedido status;
 
     @ManyToOne
     @JoinColumn(name = "cliente_id")
@@ -25,11 +33,6 @@ public class Pedido {
     @JoinColumn(name = "restaurante_id")
     private Restaurante restaurante;
 
-    @ManyToMany
-    @JoinTable(
-        name = "pedido_produto",
-        joinColumns = @JoinColumn(name = "pedido_id"),
-        inverseJoinColumns = @JoinColumn(name = "produto_id")
-    )
-    private List<Produto> itens;
+    @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL)
+    private List<ItemPedido> itens;
 }

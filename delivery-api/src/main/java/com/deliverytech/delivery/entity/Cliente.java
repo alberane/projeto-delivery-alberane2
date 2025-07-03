@@ -5,17 +5,17 @@ import lombok.Data;
 import java.util.List;
 
 @Entity
-@Data // Anotação Lombok para getters, setters, etc.
+@Data
 public class Cliente {
-    
-	@Id
+    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String nome;
     private String email;
     private String telefone;
     private String endereco;
+    private boolean ativo;
 
-    // @OneToMany(mappedBy = "cliente")
-    // private List<Pedido> pedidos;
+    @OneToMany(mappedBy = "cliente")
+    private List<Pedido> pedidos;
 }
